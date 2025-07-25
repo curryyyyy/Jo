@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<!--     <meta http-equiv="refresh" content="0; url=./ver1.html"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Purchase Intention Research Study</title>
     <style>
@@ -276,6 +275,20 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         @media (max-width: 768px) {
@@ -668,48 +681,9 @@
                     <p><strong>Thank you again for your time and participation!</strong></p>
                 </div>
             </div>
-
-            <!-- Admin Panel (Hidden) -->
-            <div class="step" id="adminPanel" style="display: none;">
-                <h2>🔒 Researcher Admin Panel</h2>
-                <div style="background: #f7fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    <h3>Data Collection Status</h3>
-                    <p><strong>Total Participants:</strong> <span id="totalParticipants">0</span></p>
-                    <p><strong>Certain Condition:</strong> <span id="certainCount">0</span></p>
-                    <p><strong>Uncertain Condition:</strong> <span id="uncertainCount">0</span></p>
-                    <p><strong>Last Updated:</strong> <span id="lastUpdated">Never</span></p>
-                </div>
-                
-                <div style="margin: 20px 0;">
-                    <button class="btn" onclick="downloadAllData()" style="margin-right: 10px;">
-                        📊 Download All Data (Excel)
-                    </button>
-                    <button class="btn btn-secondary" onclick="clearAllData()" style="background: #e53e3e; color: white;">
-                        🗑️ Clear All Data
-                    </button>
-                </div>
-                
-                <div style="background: #fff5f5; border: 1px solid #feb2b2; padding: 15px; border-radius: 8px;">
-                    <h4>⚠️ Important Notes:</h4>
-                    <ul style="margin-left: 20px; line-height: 1.6;">
-                        <li>Data is stored locally in the browser</li>
-                        <li>Download data regularly as backup</li>
-                        <li>Clearing browser data will delete all responses</li>
-                        <li>Each participant download includes all previous data</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Admin Access Button (Fixed Position) -->
-        <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
-            <button onclick="toggleAdmin()" style="background: #2d3748; color: white; border: none; padding: 10px; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; font-size: 18px;">
-                🔧
-            </button>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
         let currentStep = 1;
         let totalSteps = 6;
@@ -722,8 +696,8 @@
             timestamp: new Date().toISOString()
         };
 
-        // Initialize or retrieve existing data from localStorage
-        let allParticipantData = JSON.parse(localStorage.getItem('researchData')) || [];
+        // REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyMgdRNdLST7Wz1oLw_s123tZ8MqQFp6UJ2td86GkxeOlYHH7ZsBK9G9gNpOd9l1RiJUQ/exec';
 
         // Initialize the study
         updateProgress();
@@ -798,140 +772,76 @@
                 `Step ${currentStep} of ${totalSteps}: ${indicators[currentStep - 1]}`;
         }
 
-        function submitStudy() {
+        async function submitStudy() {
             if (validateCurrentStep()) {
-                // Collect demographic data
-                participantData.demographics = {
-                    age: document.getElementById('age').value,
-                    gender: document.getElementById('gender').value,
-                    education: document.getElementById('education').value,
-                    income: document.getElementById('income').value,
-                    occupation: document.getElementById('occupation').value,
-                    collectibleExperience: document.getElementById('collectible-experience').value
-                };
+                const submitBtn = document.getElementById('submitBtn');
+                const originalText = submitBtn.innerHTML;
+                
+                // Show loading state
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<div class="loading"></div> Submitting...';
+                
+                try {
+                    // Collect demographic data
+                    participantData.demographics = {
+                        age: document.getElementById('age').value,
+                        gender: document.getElementById('gender').value,
+                        education: document.getElementById('education').value,
+                        income: document.getElementById('income').value,
+                        occupation: document.getElementById('occupation').value,
+                        collectibleExperience: document.getElementById('collectible-experience').value
+                    };
 
-                // Collect response data
-                participantData.responses = {
-                    q1: document.querySelector('input[name="q1"]:checked').value,
-                    q2: document.querySelector('input[name="q2"]:checked').value,
-                    q3: document.querySelector('input[name="q3"]:checked').value,
-                    q4: document.querySelector('input[name="q4"]:checked').value,
-                    q5: document.querySelector('input[name="q5"]:checked').value
-                };
+                    // Collect response data
+                    participantData.responses = {
+                        q1: document.querySelector('input[name="q1"]:checked').value,
+                        q2: document.querySelector('input[name="q2"]:checked').value,
+                        q3: document.querySelector('input[name="q3"]:checked').value,
+                        q4: document.querySelector('input[name="q4"]:checked').value,
+                        q5: document.querySelector('input[name="q5"]:checked').value
+                    };
 
-                // Store participant data
-                allParticipantData.push(participantData);
-                localStorage.setItem('researchData', JSON.stringify(allParticipantData));
-                
-                // Export to Excel
-                exportToExcel();
-                
-                // Show completion message
-                alert('Thank you! Your responses have been recorded and saved to Excel file.');
-                
-                nextStep();
+                    // Prepare data for Google Sheets
+                    const formData = new FormData();
+                    formData.append('Participant ID', participantData.participantId);
+                    formData.append('Timestamp', new Date(participantData.timestamp).toLocaleString());
+                    formData.append('Condition', participantData.condition);
+                    formData.append('Age', participantData.demographics.age);
+                    formData.append('Gender', participantData.demographics.gender);
+                    formData.append('Education', participantData.demographics.education);
+                    formData.append('Income', participantData.demographics.income);
+                    formData.append('Occupation', participantData.demographics.occupation);
+                    formData.append('Collectible Experience', participantData.demographics.collectibleExperience);
+                    formData.append('Q1 - Consider Buying', participantData.responses.q1);
+                    formData.append('Q2 - Would Purchase', participantData.responses.q2);
+                    formData.append('Q3 - Strong Intention', participantData.responses.q3);
+                    formData.append('Q4 - Would Recommend', participantData.responses.q4);
+                    formData.append('Q5 - Good Value', participantData.responses.q5);
+
+                    // Send to Google Sheets
+                    const response = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+                    
+                    if (result.status === 'success') {
+                        alert('Thank you! Your responses have been submitted successfully.');
+                        nextStep();
+                    } else {
+                        throw new Error(result.message || 'Submission failed');
+                    }
+                    
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    alert('There was an error submitting your response. Please check your internet connection and try again.');
+                    
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
             }
-        }
-
-        function exportToExcel() {
-            // Prepare data for Excel
-            const excelData = allParticipantData.map(participant => ({
-                'Participant ID': participant.participantId,
-                'Timestamp': new Date(participant.timestamp).toLocaleString(),
-                'Condition': participant.condition,
-                'Age': participant.demographics.age,
-                'Gender': participant.demographics.gender,
-                'Education': participant.demographics.education,
-                'Income': participant.demographics.income,
-                'Occupation': participant.demographics.occupation,
-                'Collectible Experience': participant.demographics.collectibleExperience,
-                'Q1 - Consider Buying': participant.responses.q1,
-                'Q2 - Would Purchase': participant.responses.q2,
-                'Q3 - Strong Intention': participant.responses.q3,
-                'Q4 - Would Recommend': participant.responses.q4,
-                'Q5 - Good Value': participant.responses.q5,
-                'Purchase Intention Mean': (
-                    (parseInt(participant.responses.q1) + 
-                     parseInt(participant.responses.q2) + 
-                     parseInt(participant.responses.q3) + 
-                     parseInt(participant.responses.q4) + 
-                     parseInt(participant.responses.q5)) / 5
-                ).toFixed(2)
-            }));
-
-            // Create workbook
-            const wb = XLSX.utils.book_new();
-            
-            // Create main data sheet
-            const ws = XLSX.utils.json_to_sheet(excelData);
-            
-            // Auto-size columns
-            const colWidths = [];
-            const headerRow = Object.keys(excelData[0] || {});
-            headerRow.forEach((header, index) => {
-                const maxLength = Math.max(
-                    header.length,
-                    ...excelData.map(row => String(row[header] || '').length)
-                );
-                colWidths[index] = { wch: Math.min(maxLength + 2, 50) };
-            });
-            ws['!cols'] = colWidths;
-            
-            XLSX.utils.book_append_sheet(wb, ws, 'Research Data');
-            
-            // Create summary sheet
-            const summaryData = createSummaryData();
-            const wsSummary = XLSX.utils.json_to_sheet(summaryData);
-            XLSX.utils.book_append_sheet(wb, wsSummary, 'Summary Statistics');
-            
-            // Generate filename with timestamp
-            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-            const filename = `Purchase_Intention_Study_${timestamp}.xlsx`;
-            
-            // Save file
-            XLSX.writeFile(wb, filename);
-        }
-
-        function createSummaryData() {
-            const certainParticipants = allParticipantData.filter(p => p.condition === 'certain');
-            const uncertainParticipants = allParticipantData.filter(p => p.condition === 'uncertain');
-            
-            const calculateMean = (participants, question) => {
-                if (participants.length === 0) return 0;
-                const sum = participants.reduce((acc, p) => acc + parseInt(p.responses[question]), 0);
-                return (sum / participants.length).toFixed(2);
-            };
-            
-            const calculateOverallMean = (participants) => {
-                if (participants.length === 0) return 0;
-                const questions = ['q1', 'q2', 'q3', 'q4', 'q5'];
-                const totalSum = participants.reduce((acc, p) => {
-                    return acc + questions.reduce((qSum, q) => qSum + parseInt(p.responses[q]), 0);
-                }, 0);
-                return (totalSum / (participants.length * questions.length)).toFixed(2);
-            };
-            
-            return [
-                { Metric: 'Total Participants', Value: allParticipantData.length },
-                { Metric: 'Certain Condition', Value: certainParticipants.length },
-                { Metric: 'Uncertain Condition', Value: uncertainParticipants.length },
-                { Metric: '', Value: '' },
-                { Metric: 'CERTAIN CONDITION MEANS', Value: '' },
-                { Metric: 'Q1 - Consider Buying', Value: calculateMean(certainParticipants, 'q1') },
-                { Metric: 'Q2 - Would Purchase', Value: calculateMean(certainParticipants, 'q2') },
-                { Metric: 'Q3 - Strong Intention', Value: calculateMean(certainParticipants, 'q3') },
-                { Metric: 'Q4 - Would Recommend', Value: calculateMean(certainParticipants, 'q4') },
-                { Metric: 'Q5 - Good Value', Value: calculateMean(certainParticipants, 'q5') },
-                { Metric: 'Overall Purchase Intention', Value: calculateOverallMean(certainParticipants) },
-                { Metric: '', Value: '' },
-                { Metric: 'UNCERTAIN CONDITION MEANS', Value: '' },
-                { Metric: 'Q1 - Consider Buying', Value: calculateMean(uncertainParticipants, 'q1') },
-                { Metric: 'Q2 - Would Purchase', Value: calculateMean(uncertainParticipants, 'q2') },
-                { Metric: 'Q3 - Strong Intention', Value: calculateMean(uncertainParticipants, 'q3') },
-                { Metric: 'Q4 - Would Recommend', Value: calculateMean(uncertainParticipants, 'q4') },
-                { Metric: 'Q5 - Good Value', Value: calculateMean(uncertainParticipants, 'q5') },
-                { Metric: 'Overall Purchase Intention', Value: calculateOverallMean(uncertainParticipants) }
-            ];
         }
 
         // Event listeners for form validation
@@ -956,69 +866,6 @@
             );
             document.getElementById('submitBtn').disabled = !allAnswered;
         });
-
-        // Admin Panel Functions
-        let adminVisible = false;
-        
-        function toggleAdmin() {
-            const adminPanel = document.getElementById('adminPanel');
-            const currentStepElement = document.querySelector('.step.active');
-            
-            if (!adminVisible) {
-                // Show admin panel
-                if (currentStepElement) currentStepElement.style.display = 'none';
-                adminPanel.style.display = 'block';
-                updateAdminStats();
-                adminVisible = true;
-            } else {
-                // Hide admin panel
-                adminPanel.style.display = 'none';
-                if (currentStepElement) currentStepElement.style.display = 'block';
-                adminVisible = false;
-            }
-        }
-        
-        function updateAdminStats() {
-            const data = JSON.parse(localStorage.getItem('researchData')) || [];
-            const certainCount = data.filter(p => p.condition === 'certain').length;
-            const uncertainCount = data.filter(p => p.condition === 'uncertain').length;
-            
-            document.getElementById('totalParticipants').textContent = data.length;
-            document.getElementById('certainCount').textContent = certainCount;
-            document.getElementById('uncertainCount').textContent = uncertainCount;
-            
-            if (data.length > 0) {
-                const lastEntry = data[data.length - 1];
-                document.getElementById('lastUpdated').textContent = 
-                    new Date(lastEntry.timestamp).toLocaleString();
-            }
-        }
-        
-        function downloadAllData() {
-            const data = JSON.parse(localStorage.getItem('researchData')) || [];
-            
-            if (data.length === 0) {
-                alert('No data available to download.');
-                return;
-            }
-            
-            // Use the existing export function with stored data
-            const tempAllData = allParticipantData;
-            allParticipantData = data;
-            exportToExcel();
-            allParticipantData = tempAllData;
-            
-            alert(`Downloaded data for ${data.length} participants.`);
-        }
-        
-        function clearAllData() {
-            if (confirm('Are you sure you want to clear all collected data? This action cannot be undone.')) {
-                localStorage.removeItem('researchData');
-                allParticipantData = [];
-                updateAdminStats();
-                alert('All data has been cleared.');
-            }
-        }
     </script>
 </body>
 </html>
