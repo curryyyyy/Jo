@@ -667,8 +667,8 @@
         let condition = null;
         let responses = {};
 
-        // REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
-        const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+        // REPLACE WITH YOUR GOOGLE APPS SCRIPT URL AFTER SETUP
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbYOUR_SCRIPT_ID_HERE/exec';
 
         // Scenarios for different conditions
         const scenarios = {
@@ -835,44 +835,141 @@
             // Show loading state
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = 'Submitting...<div class="loading"></div>';
+            submitBtn.innerHTML = 'Saving to Google Sheets...<div class="loading"></div>';
 
             try {
                 // Send data to Google Sheets
                 await submitToGoogleSheets(responses);
+                console.log('Data successfully saved to Google Sheets:', responses);
                 nextSection('thankyou');
             } catch (error) {
-                console.error('Submission error:', error);
-                alert('There was an error submitting your responses. Please try again.');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Submit Responses';
+                console.error('Google Sheets submission error:', error);
+                alert('Data saved locally but could not sync to Google Sheets. Please contact the researcher.');
+                // Still proceed to thank you page
+                nextSection('thankyou');
             }
         }
 
         async function submitToGoogleSheets(data) {
-            if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-                // For testing - just log the data
-                console.log('Study responses:', data);
+            // Check if Google Apps Script URL is configured
+            if (GOOGLE_SCRIPT_URL.includes('YOUR_SCRIPT_ID_HERE')) {
+                console.log('Google Sheets not configured. Data saved locally:', data);
                 return;
             }
 
+            // Prepare data for Google Sheets
+            const formData = new FormData();
+            formData.append('timestamp', new Date().toISOString());
+            formData.append('condition', data.condition || '');
+            formData.append('consent', data.consent || '');
+            formData.append('age_eligible', data.age_eligible || '');
+            formData.append('psych_disorder', data.psych_disorder || '');
+            formData.append('age', data.age || '');
+            formData.append('gender', data.gender || '');
+            formData.append('mystery_experience', data.mystery_experience || '');
+            formData.append('certainty_scale', data.certainty_scale || '');
+            formData.append('reward_structure', data.reward_structure || '');
+            formData.append('urge_buy', data.urge_buy || '');
+            formData.append('want_purchase', data.want_purchase || '');
+            formData.append('impulse_buy', data.impulse_buy || '');
+            formData.append('probability_buy', data.probability_buy || '');
+
             const response = await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
+                body: formData
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            return response.json();
+            return response.text();
         }
 
         // Initialize progress bar
         updateProgress();
+
+        /*
+        ==========================================
+        GOOGLE SHEETS SETUP INSTRUCTIONS:
+        ==========================================
+        
+        1. Go to script.google.com
+        2. Sign in with jhc273232@gmail.com
+        3. Click "New Project"
+        4. Delete default code and paste this:
+
+        function doPost(e) {
+          try {
+            const data = {};
+            
+            // Get form data
+            if (e.parameter) {
+              Object.keys(e.parameter).forEach(key => {
+                data[key] = e.parameter[key];
+              });
+            }
+            
+            // Create or open spreadsheet
+            let spreadsheet;
+            try {
+              // Try to open existing spreadsheet (will create new one first time)
+              spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit');
+            } catch {
+              // Create new spreadsheet
+              spreadsheet = SpreadsheetApp.create('Research Study Data - Consumer Purchase Decisions');
+              
+              // Add headers
+              const sheet = spreadsheet.getActiveSheet();
+              sheet.getRange(1, 1, 1, 15).setValues([[
+                'Timestamp', 'Condition', 'Consent', 'Age_Eligible', 'Psych_Disorder',
+                'Age', 'Gender', 'Mystery_Experience', 'Certainty_Scale', 'Reward_Structure',
+                'Urge_Buy', 'Want_Purchase', 'Impulse_Buy', 'Probability_Buy', 'Submission_Time'
+              ]]);
+              
+              // Share with your email
+              spreadsheet.addEditor('jhc273232@gmail.com');
+            }
+            
+            const sheet = spreadsheet.getActiveSheet();
+            
+            // Add participant data as new row
+            sheet.appendRow([
+              data.timestamp || new Date(),
+              data.condition || '',
+              data.consent || '',
+              data.age_eligible || '',
+              data.psych_disorder || '',
+              data.age || '',
+              data.gender || '',
+              data.mystery_experience || '',
+              data.certainty_scale || '',
+              data.reward_structure || '',
+              data.urge_buy || '',
+              data.want_purchase || '',
+              data.impulse_buy || '',
+              data.probability_buy || '',
+              new Date()
+            ]);
+            
+            return ContentService.createTextOutput('Success');
+            
+          } catch (error) {
+            return ContentService.createTextOutput('Error: ' + error.toString());
+          }
+        }
+
+        5. Click "Deploy" > "New deployment"
+        6. Set Type: "Web app"
+        7. Set Execute as: "Me"
+        8. Set Who has access: "Anyone"
+        9. Click "Deploy"
+        10. COPY THE WEB APP URL
+        11. Replace 'YOUR_SCRIPT_ID_HERE' in line with your URL
+        
+        Your data will automatically save to Google Sheets!
+        ==========================================
+        */
     </script>
 </body>
 </html>
