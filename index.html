@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Purchase Intention Research Study</title>
+    <title>Consumer Purchase Decision Research Study</title>
     <style>
         * {
             margin: 0;
@@ -17,185 +17,106 @@
             color: #333;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            padding: 20px;
         }
 
         .container {
             max-width: 800px;
             margin: 0 auto;
-            padding: 20px;
-        }
-
-        .study-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
             padding: 40px;
-            margin: 20px 0;
-            transform: translateY(20px);
-            animation: slideUp 0.6s ease forwards;
         }
 
-        @keyframes slideUp {
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .step {
+        .section {
             display: none;
+            animation: fadeIn 0.5s ease-in;
         }
 
-        .step.active {
+        .section.active {
             display: block;
         }
 
-        h1 {
-            color: #4a5568;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.2em;
-        }
-
-        h2 {
-            color: #2d3748;
-            margin-bottom: 20px;
-            font-size: 1.5em;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #4a5568;
+            color: #555;
         }
 
-        input[type="text"],
-        input[type="number"],
-        input[type="email"],
-        select,
-        textarea {
+        input[type="text"], input[type="number"], select, textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #e1e5e9;
             border-radius: 8px;
             font-size: 16px;
-            transition: border-color 0.3s ease;
+            transition: border-color 0.3s;
         }
 
-        input:focus,
-        select:focus,
-        textarea:focus {
+        input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #4facfe;
         }
 
-        .checkbox-group {
+        .radio-group {
             display: flex;
-            align-items: flex-start;
+            flex-direction: column;
             gap: 12px;
-            margin: 20px 0;
         }
 
-        .checkbox-group input[type="checkbox"] {
-            width: auto;
-            margin-right: 8px;
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .radio-option:hover {
+            border-color: #4facfe;
+            background-color: #f8f9ff;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 12px;
             transform: scale(1.2);
         }
 
-        .product-display {
-            text-align: center;
-            padding: 30px;
-            background: #f7fafc;
-            border-radius: 12px;
-            margin: 20px 0;
-        }
-
-        .product-image {
-            width: 200px;
-            height: 200px;
-            background: #e2e8f0;
-            border-radius: 12px;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: #718096;
-            border: 2px dashed #cbd5e0;
-        }
-
-        .scenario-box {
-            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
-            color: white;
-            padding: 25px;
-            border-radius: 12px;
-            margin: 20px 0;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 600;
-            box-shadow: 0 5px 15px rgba(238, 90, 82, 0.3);
-        }
-
-        .scenario-box.certain {
-            background: linear-gradient(135deg, #4ecdc4, #44a19c);
-            box-shadow: 0 5px 15px rgba(68, 161, 156, 0.3);
-        }
-
-        .likert-scale {
-            margin: 15px 0;
-        }
-
-        .likert-question {
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #2d3748;
-        }
-
-        .likert-options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 10px 0;
-            background: #f7fafc;
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        .likert-option {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .likert-option input[type="radio"] {
-            transform: scale(1.3);
-            margin: 0;
-        }
-
-        .likert-option label {
-            font-size: 12px;
-            text-align: center;
-            margin: 0;
-            font-weight: normal;
-        }
-
-        .likert-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 12px;
-            color: #718096;
-        }
-
         .btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             color: white;
             border: none;
             padding: 15px 30px;
@@ -203,482 +124,538 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 20px 10px 0 0;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-right: 10px;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
         }
 
         .btn:disabled {
-            background: #cbd5e0;
+            background: #ccc;
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
         }
 
         .btn-secondary {
-            background: #e2e8f0;
-            color: #4a5568;
+            background: #6c757d;
         }
 
         .btn-secondary:hover {
-            background: #cbd5e0;
+            box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
+        }
+
+        .consent-text {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #4facfe;
+            margin-bottom: 25px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .consent-text h3 {
+            color: #4facfe;
+            margin-bottom: 15px;
+        }
+
+        .consent-text p {
+            margin-bottom: 15px;
+        }
+
+        .scenario-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .scale-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .scale-options {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .scale-option-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .scale-options input[type="radio"] {
+            transform: scale(1.3);
+        }
+
+        .scale-number {
+            font-size: 12px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
         }
 
         .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 3px;
+            height: 4px;
+            background: #e1e5e9;
+            border-radius: 2px;
             margin-bottom: 30px;
             overflow: hidden;
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             transition: width 0.3s ease;
-            border-radius: 3px;
+            border-radius: 2px;
         }
 
-        .step-indicator {
+        .thank-you {
             text-align: center;
+            padding: 40px 20px;
+        }
+
+        .thank-you h2 {
+            color: #4facfe;
             margin-bottom: 20px;
-            color: #718096;
-            font-size: 14px;
+            font-size: 2.5em;
         }
 
-        .consent-text {
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            font-size: 14px;
-            line-height: 1.6;
-            max-height: 300px;
-            overflow-y: auto;
-            border: 1px solid #e2e8f0;
-        }
-
-        .debriefing {
-            background: linear-gradient(135deg, #48bb78, #38a169);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .demographic-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+        .thank-you p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 15px;
         }
 
         .loading {
             display: inline-block;
             width: 20px;
             height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4facfe;
             border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .study-card {
-                padding: 20px;
-            }
-            
-            .likert-options {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .likert-option {
-                flex-direction: row;
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .demographic-grid {
-                grid-template-columns: 1fr;
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="study-card">
+        <div class="header">
+            <h1>Consumer Purchase Decision Research Study</h1>
+            <p>HELP University - Department of Psychology</p>
+        </div>
+
+        <div class="content">
+            <!-- Progress Bar -->
             <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
+                <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
             </div>
-            <div class="step-indicator" id="stepIndicator"></div>
 
-            <!-- Step 1: Welcome -->
-            <div class="step active" id="step1">
-                <h1>Purchase Intention Research Study</h1>
+            <!-- Welcome Section -->
+            <div class="section active" id="welcome">
                 <h2>Welcome to Our Research Study</h2>
-                <p>Thank you for your interest in participating in our research study about consumer purchase intentions. This study is being conducted to better understand how people make purchasing decisions.</p>
-                <p><strong>What to expect:</strong></p>
-                <ul style="margin: 20px 0; padding-left: 20px;">
-                    <li>This study will take approximately 10-15 minutes to complete</li>
-                    <li>You will be asked to provide demographic information</li>
-                    <li>You will view a product scenario and answer questions about your purchase intentions</li>
-                    <li>All responses are anonymous and confidential</li>
-                </ul>
-                <button class="btn" onclick="nextStep()">Continue to Consent Form</button>
+                <p>This study explores how certainty versus uncertainty in product information influences consumer purchase decisions in young adults.</p>
+                <br>
+                <p><strong>Time Required:</strong> Approximately 10-15 minutes</p>
+                <p><strong>Participants:</strong> Adults aged 18-29 years</p>
+                <br>
+                <button class="btn" onclick="nextSection('consent')">Begin Study</button>
             </div>
 
-            <!-- Step 2: Informed Consent -->
-            <div class="step" id="step2">
-                <h2>Informed Consent Form</h2>
+            <!-- Informed Consent Section -->
+            <div class="section" id="consent">
+                <h2>Informed Consent</h2>
                 <div class="consent-text">
-                    <h3>Research Study: Consumer Purchase Intention</h3>
-                    <p><strong>Purpose:</strong> This study aims to understand how consumers make purchase decisions under different product information conditions.</p>
+                    <p><strong>Dear participants,</strong></p>
+                    <p>This study explores how certainty versus uncertainty in product information influences consumer purchase decisions in young adults. To participate in this study, you must:</p>
+                    <ol>
+                        <li>Be aged between 18-29 years old, and</li>
+                        <li>Not be diagnosed with any psychological disorder</li>
+                    </ol>
                     
-                    <p><strong>Procedures:</strong> You will be asked to complete a demographic questionnaire, view a product scenario, and answer questions about your purchase intentions using rating scales.</p>
+                    <h3>What will be done:</h3>
+                    <p>If you choose to take part in this research, you will first be asked to read and agree to an informed consent form. After that, you will be required to provide some demographic information. Then, you will be presented with a short scenario involving a purchasing situation followed by a Purchase Intention Scale (Bagozzi, 2016) to measure your intention to purchase. The entire process is expected to take no more than 10 minutes.</p>
                     
-                    <p><strong>Time Commitment:</strong> Approximately 10-15 minutes.</p>
+                    <h3>Risks and discomfort:</h3>
+                    <p>There are no anticipated risks or discomfort in participation in the current study. However, if you experience any discomfort while participating in this study, you are free to terminate your participation at any time, and you will not be penalised. If you find your participation in the study has caused you psychological harm, you may contact the Centre of Psychological and Counselling Services (CPCS) at https://www.cpcs-helpuni.com/ (03-78493200) or any reputable counselling centres near you. Please note that the CPCS only sees clients on an appointment basis.</p>
                     
-                    <p><strong>Risks:</strong> There are no anticipated risks associated with participation in this study.</p>
+                    <h3>Confidentiality:</h3>
+                    <p>Your responses will remain anonymous throughout the study. The information and data collected will only be assessed by the researchers and the researchers' supervisor.</p>
                     
-                    <p><strong>Benefits:</strong> While there are no direct benefits to you, your participation will contribute to our understanding of consumer behavior.</p>
+                    <h3>Decision to quit at any time:</h3>
+                    <p>Participation in this study is voluntary, you may withdraw at any time. No adverse action will be taken against you for withdrawing your participation. If you wish to quit the study, you may exit without submitting the current informed consent form.</p>
                     
-                    <p><strong>Confidentiality:</strong> All information collected will be kept confidential. Your responses will be anonymous and will not be linked to your personal identity.</p>
+                    <h3>Benefits of this study:</h3>
+                    <p>While there are no direct benefits for participating in this study, your participation will contribute valuable insights to the field of psychology and consumer behavior. The findings may help researchers better understand how different types of rewards influence purchasing intention.</p>
                     
-                    <p><strong>Voluntary Participation:</strong> Your participation is entirely voluntary. You may withdraw from the study at any time without penalty.</p>
+                    <p>This study has been reviewed and approved by the Ethics Review Board, Department of Psychology, Faculty of Behavioural Sciences at HELP University [ERB Approval Code: < >].</p>
                     
-                    <p><strong>Contact Information:</strong> If you have questions about this study, please contact [Researcher Contact Information].</p>
+                    <p><strong>For any research-related problems, complaints, or questions regarding participants' rights, please contact:</strong><br>
+                    Chairperson, Ethics Review Board<br>
+                    Department of Psychology Faculty of Behavioural Sciences<br>
+                    Level 3, Block B HELP University – Subang 2<br>
+                    Persiaran Cakerawala, Seksyen U4<br>
+                    40150 Shah Alam Selangor Darul Ehsan Malaysia<br>
+                    Email: psych.erb@help.edu.my<br>
+                    Phone: +603 7849 3000</p>
+                    
+                    <p><strong>For any enquiries of this particular study, please contact:</strong><br>
+                    <strong>Researcher:</strong> Jocelyn Ooi Si Hua - B2100842@helplive.edu.my<br>
+                    <strong>Researcher's Supervisor:</strong> Khor Khai Ling - khailing.k@help.edu.my</p>
                 </div>
-                
-                <div class="checkbox-group">
-                    <input type="checkbox" id="consentCheck" required>
-                    <label for="consentCheck">I have read and understood the information above. I voluntarily agree to participate in this research study.</label>
+
+                <div class="form-group">
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="consent_yes" name="consent" value="yes">
+                            <label for="consent_yes">Yes, I understand and agree to participate in this study.</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="consent_no" name="consent" value="no">
+                            <label for="consent_no">No, I would not like to participate in this study.</label>
+                        </div>
+                    </div>
                 </div>
-                
-                <button class="btn" onclick="nextStep()" id="consentBtn" disabled>I Agree - Continue</button>
-                <button class="btn btn-secondary" onclick="window.close()">I Do Not Agree - Exit</button>
+                <button class="btn" onclick="processConsent()">Continue</button>
             </div>
 
-            <!-- Step 3: Demographics -->
-            <div class="step" id="step3">
+            <!-- Eligibility Check -->
+            <div class="section" id="eligibility">
+                <h2>Eligibility Check</h2>
+                <div class="form-group">
+                    <label>Are you between 18-29 years old?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="age_yes" name="age_eligible" value="yes">
+                            <label for="age_yes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="age_no" name="age_eligible" value="no">
+                            <label for="age_no">No</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Have you been diagnosed with any psychological disorder?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="psych_yes" name="psych_disorder" value="yes">
+                            <label for="psych_yes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="psych_no" name="psych_disorder" value="no">
+                            <label for="psych_no">No</label>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" onclick="checkEligibility()">Continue</button>
+            </div>
+
+            <!-- Demographics -->
+            <div class="section" id="demographics">
                 <h2>Demographic Information</h2>
-                <p>Please provide the following information about yourself:</p>
+                <div class="form-group">
+                    <label for="age">Age:</label>
+                    <input type="number" id="age" name="age" min="18" max="29" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="prefer-not-to-say">Prefer not to say</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Do you have previous experience with purchasing blind box/mystery items?</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="exp_yes" name="mystery_experience" value="yes">
+                            <label for="exp_yes">Yes</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="exp_no" name="mystery_experience" value="no">
+                            <label for="exp_no">No</label>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" onclick="validateDemographics()">Continue</button>
+            </div>
+
+            <!-- Scenario Presentation -->
+            <div class="section" id="scenario">
+                <h2>Purchase Scenario</h2>
+                <div class="scenario-box" id="scenarioContent">
+                    <!-- Scenario content will be inserted here based on condition -->
+                </div>
+                <button class="btn" onclick="nextSection('manipulation-check')">Continue</button>
+            </div>
+
+            <!-- Manipulation Check -->
+            <div class="section" id="manipulation-check">
+                <h2>Manipulation Check</h2>
                 
-                <div class="demographic-grid">
-                    <div class="form-group">
-                        <label for="age">Age:</label>
-                        <input type="number" id="age" min="18" max="100" required>
+                <div class="form-group">
+                    <label><strong>How certain were you about what reward you would receive?</strong></label>
+                    <p style="font-size: 14px; color: #666; margin-bottom: 15px;">
+                        1 = very uncertain, meaning you do not know what you will get<br>
+                        7 = very certain, meaning you know what you will get
+                    </p>
+                    <div class="scale-item">
+                        <span>Very Uncertain</span>
+                        <div class="scale-options">
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="1">
+                                <span class="scale-number">1</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="2">
+                                <span class="scale-number">2</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="3">
+                                <span class="scale-number">3</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="4">
+                                <span class="scale-number">4</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="5">
+                                <span class="scale-number">5</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="6">
+                                <span class="scale-number">6</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="7">
+                                <span class="scale-number">7</span>
+                            </div>
+                        </div>
+                        <span>Very Certain</span>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="gender">Gender:</label>
-                        <select id="gender" required>
-                            <option value="">Select...</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="non-binary">Non-binary</option>
-                            <option value="prefer-not-to-say">Prefer not to say</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="education">Highest Education Level:</label>
-                        <select id="education" required>
-                            <option value="">Select...</option>
-                            <option value="high-school">High School</option>
-                            <option value="diploma">Diploma</option>
-                            <option value="bachelors">Bachelor's Degree</option>
-                            <option value="masters">Master's Degree</option>
-                            <option value="phd">PhD</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="income">Monthly Income (RM):</label>
-                        <select id="income" required>
-                            <option value="">Select...</option>
-                            <option value="below-2000">Below 2,000</option>
-                            <option value="2000-4000">2,000 - 4,000</option>
-                            <option value="4000-6000">4,000 - 6,000</option>
-                            <option value="6000-8000">6,000 - 8,000</option>
-                            <option value="above-8000">Above 8,000</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="occupation">Occupation:</label>
-                        <input type="text" id="occupation" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="collectible-experience">How often do you purchase collectible items?</label>
-                        <select id="collectible-experience" required>
-                            <option value="">Select...</option>
-                            <option value="never">Never</option>
-                            <option value="rarely">Rarely</option>
-                            <option value="sometimes">Sometimes</option>
-                            <option value="often">Often</option>
-                            <option value="very-often">Very Often</option>
-                        </select>
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Which best describes the reward structure?</strong></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="reward_knew" name="reward_structure" value="knew">
+                            <label for="reward_knew">I knew exactly what I would get</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="reward_unsure" name="reward_structure" value="unsure">
+                            <label for="reward_unsure">I was unsure what I would get</label>
+                        </div>
                     </div>
                 </div>
                 
-                <button class="btn" onclick="nextStep()" id="demographicsBtn" disabled>Continue</button>
+                <button class="btn" onclick="validateManipulationCheck()">Continue</button>
             </div>
 
-            <!-- Step 4: Product Scenario -->
-            <div class="step" id="step4">
-                <h2>Product Scenario</h2>
-                <p>Please carefully read the following scenario and examine the product:</p>
-                
-                <div class="product-display">
-                    <div class="product-image">
-                        <div>Collectible Figure<br>(Product Image)</div>
+            <!-- Purchase Intention Scale -->
+            <div class="section" id="purchase-intention">
+                <h2>Purchase Intention Scale (Bagozzi et al., 2016)</h2>
+                <p><strong>Based on the situation above, please indicate your agreement with the following statements:</strong></p>
+
+                <div class="form-group">
+                    <div class="scale-item">
+                        <span><strong>I would feel a strong urge to buy the product.</strong></span>
+                        <div class="scale-options">
+                            <label style="margin-right: 5px; font-size: 12px;">Strongly Disagree</label>
+                            <div class="scale-option-container">
+                                <input type="radio" name="urge_buy" value="1">
+                                <span class="scale-number">1</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="urge_buy" value="2">
+                                <span class="scale-number">2</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="urge_buy" value="3">
+                                <span class="scale-number">3</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="urge_buy" value="4">
+                                <span class="scale-number">4</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="urge_buy" value="5">
+                                <span class="scale-number">5</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="urge_buy" value="6">
+                                <span class="scale-number">6</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="urge_buy" value="7">
+                                <span class="scale-number">7</span>
+                            </div>
+                            <label style="margin-left: 5px; font-size: 12px;">Strongly Agree</label>
+                        </div>
+                    </div>
+
+                    <div class="scale-item">
+                        <span><strong>I would want to purchase the product.</strong></span>
+                        <div class="scale-options">
+                            <label style="margin-right: 5px; font-size: 12px;">Strongly Disagree</label>
+                            <div class="scale-option-container">
+                                <input type="radio" name="want_purchase" value="1">
+                                <span class="scale-number">1</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="want_purchase" value="2">
+                                <span class="scale-number">2</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="want_purchase" value="3">
+                                <span class="scale-number">3</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="want_purchase" value="4">
+                                <span class="scale-number">4</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="want_purchase" value="5">
+                                <span class="scale-number">5</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="want_purchase" value="6">
+                                <span class="scale-number">6</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="want_purchase" value="7">
+                                <span class="scale-number">7</span>
+                            </div>
+                            <label style="margin-left: 5px; font-size: 12px;">Strongly Agree</label>
+                        </div>
+                    </div>
+
+                    <div class="scale-item">
+                        <span><strong>I would feel the impulse to buy the product.</strong></span>
+                        <div class="scale-options">
+                            <label style="margin-right: 5px; font-size: 12px;">Strongly Disagree</label>
+                            <div class="scale-option-container">
+                                <input type="radio" name="impulse_buy" value="1">
+                                <span class="scale-number">1</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="impulse_buy" value="2">
+                                <span class="scale-number">2</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="impulse_buy" value="3">
+                                <span class="scale-number">3</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="impulse_buy" value="4">
+                                <span class="scale-number">4</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="impulse_buy" value="5">
+                                <span class="scale-number">5</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="impulse_buy" value="6">
+                                <span class="scale-number">6</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="impulse_buy" value="7">
+                                <span class="scale-number">7</span>
+                            </div>
+                            <label style="margin-left: 5px; font-size: 12px;">Strongly Agree</label>
+                        </div>
+                    </div>
+
+                    <div class="scale-item">
+                        <span><strong>Please indicate the probability that you would buy the product.</strong></span>
+                        <div class="scale-options">
+                            <label style="margin-right: 5px; font-size: 12px;">Very Unlikely</label>
+                            <div class="scale-option-container">
+                                <input type="radio" name="probability_buy" value="1">
+                                <span class="scale-number">1</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="probability_buy" value="2">
+                                <span class="scale-number">2</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="probability_buy" value="3">
+                                <span class="scale-number">3</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="probability_buy" value="4">
+                                <span class="scale-number">4</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="probability_buy" value="5">
+                                <span class="scale-number">5</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="probability_buy" value="6">
+                                <span class="scale-number">6</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="probability_buy" value="7">
+                                <span class="scale-number">7</span>
+                            </div>
+                            <label style="margin-left: 5px; font-size: 12px;">Very Likely</label>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="scenario-box" id="scenarioBox">
-                    <!-- Scenario text will be inserted here based on condition -->
+                <button class="btn" id="submitBtn" onclick="validatePurchaseIntention()">Submit Responses</button>
+            </div>
+
+            <!-- Thank You Page -->
+            <div class="section" id="thankyou">
+                <div class="thank-you">
+                    <h2>Thank You!</h2>
+                    <p>Your participation in this research study is greatly appreciated.</p>
+                    <p>Your responses have been recorded and will contribute valuable insights to our understanding of consumer purchase decisions.</p>
+                    <p>If you have any questions about this study, please contact the researchers using the information provided in the consent form.</p>
+                    <br>
+                    <p><em>You may now close this browser window.</em></p>
                 </div>
-                
-                <p>Please take a moment to consider this scenario before proceeding to the questions.</p>
-                
-                <button class="btn" onclick="nextStep()">Continue to Questions</button>
             </div>
 
-            <!-- Step 5: Purchase Intention Scale -->
-            <div class="step" id="step5">
-                <h2>Purchase Intention Questions</h2>
-                <p>Based on the scenario you just viewed, please rate your agreement with the following statements using the scale below:</p>
-                
-                <form id="purchaseIntentionForm">
-                    <div class="likert-scale">
-                        <div class="likert-question">1. I would consider buying this product.</div>
-                        <div class="likert-options">
-                            <div class="likert-option">
-                                <input type="radio" name="q1" value="1" id="q1_1" required>
-                                <label for="q1_1">1</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q1" value="2" id="q1_2">
-                                <label for="q1_2">2</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q1" value="3" id="q1_3">
-                                <label for="q1_3">3</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q1" value="4" id="q1_4">
-                                <label for="q1_4">4</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q1" value="5" id="q1_5">
-                                <label for="q1_5">5</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q1" value="6" id="q1_6">
-                                <label for="q1_6">6</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q1" value="7" id="q1_7">
-                                <label for="q1_7">7</label>
-                            </div>
-                        </div>
-                        <div class="likert-labels">
-                            <span>Strongly Disagree</span>
-                            <span>Strongly Agree</span>
-                        </div>
-                    </div>
-
-                    <div class="likert-scale">
-                        <div class="likert-question">2. I would purchase this product if I had the opportunity.</div>
-                        <div class="likert-options">
-                            <div class="likert-option">
-                                <input type="radio" name="q2" value="1" id="q2_1" required>
-                                <label for="q2_1">1</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q2" value="2" id="q2_2">
-                                <label for="q2_2">2</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q2" value="3" id="q2_3">
-                                <label for="q2_3">3</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q2" value="4" id="q2_4">
-                                <label for="q2_4">4</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q2" value="5" id="q2_5">
-                                <label for="q2_5">5</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q2" value="6" id="q2_6">
-                                <label for="q2_6">6</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q2" value="7" id="q2_7">
-                                <label for="q2_7">7</label>
-                            </div>
-                        </div>
-                        <div class="likert-labels">
-                            <span>Strongly Disagree</span>
-                            <span>Strongly Agree</span>
-                        </div>
-                    </div>
-
-                    <div class="likert-scale">
-                        <div class="likert-question">3. I have a strong intention to buy this product.</div>
-                        <div class="likert-options">
-                            <div class="likert-option">
-                                <input type="radio" name="q3" value="1" id="q3_1" required>
-                                <label for="q3_1">1</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q3" value="2" id="q3_2">
-                                <label for="q3_2">2</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q3" value="3" id="q3_3">
-                                <label for="q3_3">3</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q3" value="4" id="q3_4">
-                                <label for="q3_4">4</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q3" value="5" id="q3_5">
-                                <label for="q3_5">5</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q3" value="6" id="q3_6">
-                                <label for="q3_6">6</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q3" value="7" id="q3_7">
-                                <label for="q3_7">7</label>
-                            </div>
-                        </div>
-                        <div class="likert-labels">
-                            <span>Strongly Disagree</span>
-                            <span>Strongly Agree</span>
-                        </div>
-                    </div>
-
-                    <div class="likert-scale">
-                        <div class="likert-question">4. I would recommend this product to others.</div>
-                        <div class="likert-options">
-                            <div class="likert-option">
-                                <input type="radio" name="q4" value="1" id="q4_1" required>
-                                <label for="q4_1">1</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q4" value="2" id="q4_2">
-                                <label for="q4_2">2</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q4" value="3" id="q4_3">
-                                <label for="q4_3">3</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q4" value="4" id="q4_4">
-                                <label for="q4_4">4</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q4" value="5" id="q4_5">
-                                <label for="q4_5">5</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q4" value="6" id="q4_6">
-                                <label for="q4_6">6</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q4" value="7" id="q4_7">
-                                <label for="q4_7">7</label>
-                            </div>
-                        </div>
-                        <div class="likert-labels">
-                            <span>Strongly Disagree</span>
-                            <span>Strongly Agree</span>
-                        </div>
-                    </div>
-
-                    <div class="likert-scale">
-                        <div class="likert-question">5. This product represents good value for money.</div>
-                        <div class="likert-options">
-                            <div class="likert-option">
-                                <input type="radio" name="q5" value="1" id="q5_1" required>
-                                <label for="q5_1">1</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q5" value="2" id="q5_2">
-                                <label for="q5_2">2</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q5" value="3" id="q5_3">
-                                <label for="q5_3">3</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q5" value="4" id="q5_4">
-                                <label for="q5_4">4</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q5" value="5" id="q5_5">
-                                <label for="q5_5">5</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q5" value="6" id="q5_6">
-                                <label for="q5_6">6</label>
-                            </div>
-                            <div class="likert-option">
-                                <input type="radio" name="q5" value="7" id="q5_7">
-                                <label for="q5_7">7</label>
-                            </div>
-                        </div>
-                        <div class="likert-labels">
-                            <span>Strongly Disagree</span>
-                            <span>Strongly Agree</span>
-                        </div>
-                    </div>
-                </form>
-                
-                <button class="btn" onclick="submitStudy()" id="submitBtn" disabled>Submit Responses</button>
-            </div>
-
-            <!-- Step 6: Debriefing -->
-            <div class="step" id="step6">
-                <div class="debriefing">
-                    <h2>Thank You for Participating!</h2>
-                    <h3>Study Debriefing</h3>
-                    
-                    <p>Thank you for completing our research study on consumer purchase intention. Your participation is valuable to our research.</p>
-                    
-                    <h4>Purpose of the Study:</h4>
-                    <p>This study examined how product uncertainty affects consumer purchase intentions. Participants were randomly assigned to view either a certain product scenario (specific collectible figure) or an uncertain product scenario (mystery box), and then rated their purchase intentions.</p>
-                    
-                    <h4>Why This Research Matters:</h4>
-                    <p>Understanding how consumers respond to product uncertainty helps businesses make better decisions about product presentation and marketing strategies. Your responses will contribute to academic research in consumer behavior.</p>
-                    
-                    <h4>Confidentiality:</h4>
-                    <p>All your responses have been recorded anonymously. No personal identifying information has been collected or stored.</p>
-                    
-                    <h4>Questions or Concerns:</h4>
-                    <p>If you have any questions about this study or would like to know more about the results, please contact [Researcher Contact Information].</p>
-                    
-                    <p><strong>Thank you again for your time and participation!</strong></p>
+            <!-- Ineligible Page -->
+            <div class="section" id="ineligible">
+                <div class="thank-you">
+                    <h2>Thank You for Your Interest</h2>
+                    <p>Unfortunately, you do not meet the eligibility criteria for this study.</p>
+                    <p>We appreciate your willingness to participate in research.</p>
+                    <br>
+                    <p><em>You may now close this browser window.</em></p>
                 </div>
             </div>
         </div>
@@ -686,186 +663,216 @@
 
     <script>
         let currentStep = 1;
-        let totalSteps = 6;
-        let condition = Math.random() < 0.5 ? 'uncertain' : 'certain';
-        let participantData = {
-            participantId: 'P' + Date.now() + Math.floor(Math.random() * 1000),
-            condition: condition,
-            demographics: {},
-            responses: {},
-            timestamp: new Date().toISOString()
+        const totalSteps = 7;
+        let condition = null;
+        let responses = {};
+
+        // REPLACE THIS URL WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
+        const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+        // Scenarios for different conditions
+        const scenarios = {
+            uncertainty: {
+                title: "Experimental Scenario",
+                content: "Imagine the following situation:<br><br>You are browsing an online store and come across a limited-edition mystery product. The box costs RM50, and the item inside is random. Some of the rare items are said to be worth over RM150, while others may be worth less.",
+                image: `
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                    width: 200px; height: 200px; border-radius: 15px; 
+                                    display: inline-flex; align-items: center; justify-content: center;
+                                    box-shadow: 0 10px 30px rgba(0,0,0,0.2); margin-bottom: 15px;">
+                            <div style="color: white; text-align: center;">
+                                <div style="font-size: 60px; margin-bottom: 10px;">?</div>
+                                <div style="font-weight: bold; font-size: 16px;">LIMITED EDITION</div>
+                                <div style="font-size: 14px; opacity: 0.9;">Mystery Collectible</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <div style="font-size: 18px; color: #667eea; font-weight: bold;">🎁 Mystery Collectible Box</div>
+                            <div style="font-size: 14px; color: #666; margin: 5px 0;">Get a surprise limited-edition collectible! Each box contains one random item from our exclusive collection.</div>
+                            <div style="font-size: 24px; color: #e74c3c; font-weight: bold;">RM 50</div>
+                        </div>
+                    </div>
+                `
+            },
+            certainty: {
+                title: "Experimental Scenario", 
+                content: "Imagine the following situation:<br><br>Imagine you come across a limited-edition collectible product for RM50. The product clearly shows the exact item you will receive a Cry Baby.",
+                image: `
+                    <div style="text-align: center; margin: 20px 0;">
+                        <img src="https://prod-eurasian-res.popmart.com/default/20240422_100725_282634__1200x1200.jpg?x-oss-process=image/format,webp" 
+                             style="width: 200px; height: 200px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); object-fit: cover;">
+                        <div style="margin-top: 15px;">
+                            <div style="font-size: 18px; color: #667eea; font-weight: bold;">🎀 Cry Baby × Powerpuff Girls</div>
+                            <div style="font-size: 14px; color: #666; margin: 5px 0;">Limited-edition collectible featuring Cry Baby × Powerpuff Girls series.</div>
+                            <div style="font-size: 24px; color: #e74c3c; font-weight: bold;">RM 50</div>
+                        </div>
+                    </div>
+                `
+            }
         };
-
-        // REPLACE THIS WITH YOUR GOOGLE APPS SCRIPT WEB APP URL
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyMgdRNdLST7Wz1oLw_s123tZ8MqQFp6UJ2td86GkxeOlYHH7ZsBK9G9gNpOd9l1RiJUQ/exec';
-
-        // Initialize the study
-        updateProgress();
-        updateStepIndicator();
-        
-        // Set up the scenario based on condition
-        document.addEventListener('DOMContentLoaded', function() {
-            setupScenario();
-        });
-
-        function setupScenario() {
-            const scenarioBox = document.getElementById('scenarioBox');
-            if (condition === 'uncertain') {
-                scenarioBox.innerHTML = `
-                    <strong>Mystery Collectible Box</strong><br>
-                    Pay RM25 for a mystery collectible box containing a figure worth RM15-25.<br>
-                    You might lose RM10 or break even from this purchase.
-                `;
-                scenarioBox.classList.remove('certain');
-            } else {
-                scenarioBox.innerHTML = `
-                    <strong>Specific Collectible Figure</strong><br>
-                    Pay RM25 for a specific collectible figure worth RM20.<br>
-                    You will lose RM5 from this purchase.
-                `;
-                scenarioBox.classList.add('certain');
-            }
-        }
-
-        function nextStep() {
-            if (validateCurrentStep()) {
-                if (currentStep < totalSteps) {
-                    document.getElementById(`step${currentStep}`).classList.remove('active');
-                    currentStep++;
-                    document.getElementById(`step${currentStep}`).classList.add('active');
-                    updateProgress();
-                    updateStepIndicator();
-                    
-                    // Setup scenario when reaching step 4
-                    if (currentStep === 4) {
-                        setupScenario();
-                    }
-                }
-            }
-        }
-
-        function validateCurrentStep() {
-            switch(currentStep) {
-                case 2:
-                    return document.getElementById('consentCheck').checked;
-                case 3:
-                    const requiredFields = ['age', 'gender', 'education', 'income', 'occupation', 'collectible-experience'];
-                    return requiredFields.every(field => document.getElementById(field).value !== '');
-                case 5:
-                    const questions = ['q1', 'q2', 'q3', 'q4', 'q5'];
-                    return questions.every(q => document.querySelector(`input[name="${q}"]:checked`));
-                default:
-                    return true;
-            }
-        }
 
         function updateProgress() {
             const progress = (currentStep / totalSteps) * 100;
-            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('progressFill').style.width = progress + '%';
         }
 
-        function updateStepIndicator() {
-            const indicators = [
-                'Welcome', 'Consent', 'Demographics', 'Product Scenario', 'Questions', 'Complete'
-            ];
-            document.getElementById('stepIndicator').textContent = 
-                `Step ${currentStep} of ${totalSteps}: ${indicators[currentStep - 1]}`;
-        }
+        function nextSection(sectionId) {
+            // Hide current section
+            document.querySelector('.section.active').classList.remove('active');
+            
+            // Show next section  
+            document.getElementById(sectionId).classList.add('active');
+            
+            currentStep++;
+            updateProgress();
 
-        async function submitStudy() {
-            if (validateCurrentStep()) {
-                const submitBtn = document.getElementById('submitBtn');
-                const originalText = submitBtn.innerHTML;
+            // Random assignment when moving to scenario
+            if (sectionId === 'scenario' && condition === null) {
+                // Equal randomization: 50% uncertainty, 50% certainty
+                condition = Math.random() < 0.5 ? 'uncertainty' : 'certainty';
+                responses.condition = condition;
                 
-                // Show loading state
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<div class="loading"></div> Submitting...';
-                
-                try {
-                    // Collect demographic data
-                    participantData.demographics = {
-                        age: document.getElementById('age').value,
-                        gender: document.getElementById('gender').value,
-                        education: document.getElementById('education').value,
-                        income: document.getElementById('income').value,
-                        occupation: document.getElementById('occupation').value,
-                        collectibleExperience: document.getElementById('collectible-experience').value
-                    };
-
-                    // Collect response data
-                    participantData.responses = {
-                        q1: document.querySelector('input[name="q1"]:checked').value,
-                        q2: document.querySelector('input[name="q2"]:checked').value,
-                        q3: document.querySelector('input[name="q3"]:checked').value,
-                        q4: document.querySelector('input[name="q4"]:checked').value,
-                        q5: document.querySelector('input[name="q5"]:checked').value
-                    };
-
-                    // Prepare data for Google Sheets
-                    const formData = new FormData();
-                    formData.append('Participant ID', participantData.participantId);
-                    formData.append('Timestamp', new Date(participantData.timestamp).toLocaleString());
-                    formData.append('Condition', participantData.condition);
-                    formData.append('Age', participantData.demographics.age);
-                    formData.append('Gender', participantData.demographics.gender);
-                    formData.append('Education', participantData.demographics.education);
-                    formData.append('Income', participantData.demographics.income);
-                    formData.append('Occupation', participantData.demographics.occupation);
-                    formData.append('Collectible Experience', participantData.demographics.collectibleExperience);
-                    formData.append('Q1 - Consider Buying', participantData.responses.q1);
-                    formData.append('Q2 - Would Purchase', participantData.responses.q2);
-                    formData.append('Q3 - Strong Intention', participantData.responses.q3);
-                    formData.append('Q4 - Would Recommend', participantData.responses.q4);
-                    formData.append('Q5 - Good Value', participantData.responses.q5);
-
-                    // Send to Google Sheets
-                    const response = await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    const result = await response.json();
-                    
-                    if (result.status === 'success') {
-                        alert('Thank you! Your responses have been submitted successfully.');
-                        nextStep();
-                    } else {
-                        throw new Error(result.message || 'Submission failed');
-                    }
-                    
-                } catch (error) {
-                    console.error('Submission error:', error);
-                    alert('There was an error submitting your response. Please check your internet connection and try again.');
-                    
-                    // Reset button state
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
-                }
+                const scenario = scenarios[condition];
+                document.getElementById('scenarioContent').innerHTML = `
+                    <h3>${scenario.title}</h3>
+                    <p>${scenario.content}</p>
+                    ${scenario.image}
+                `;
             }
         }
 
-        // Event listeners for form validation
-        document.getElementById('consentCheck').addEventListener('change', function() {
-            document.getElementById('consentBtn').disabled = !this.checked;
-        });
+        function processConsent() {
+            const consent = document.querySelector('input[name="consent"]:checked');
+            if (!consent) {
+                alert('Please select an option to continue.');
+                return;
+            }
 
-        // Demographics validation
-        const demographicFields = ['age', 'gender', 'education', 'income', 'occupation', 'collectible-experience'];
-        demographicFields.forEach(field => {
-            document.getElementById(field).addEventListener('change', function() {
-                const allFilled = demographicFields.every(f => document.getElementById(f).value !== '');
-                document.getElementById('demographicsBtn').disabled = !allFilled;
+            if (consent.value === 'no') {
+                nextSection('thankyou');
+                return;
+            }
+
+            responses.consent = consent.value;
+            nextSection('eligibility');
+        }
+
+        function checkEligibility() {
+            const ageEligible = document.querySelector('input[name="age_eligible"]:checked');
+            const psychDisorder = document.querySelector('input[name="psych_disorder"]:checked');
+
+            if (!ageEligible || !psychDisorder) {
+                alert('Please answer all eligibility questions.');
+                return;
+            }
+
+            responses.age_eligible = ageEligible.value;
+            responses.psych_disorder = psychDisorder.value;
+
+            if (ageEligible.value === 'no' || psychDisorder.value === 'yes') {
+                nextSection('ineligible');
+                return;
+            }
+
+            nextSection('demographics');
+        }
+
+        function validateDemographics() {
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const experience = document.querySelector('input[name="mystery_experience"]:checked');
+
+            if (!age || !gender || !experience) {
+                alert('Please fill in all demographic information.');
+                return;
+            }
+
+            if (age < 18 || age > 29) {
+                alert('Age must be between 18-29 years.');
+                return;
+            }
+
+            responses.age = age;
+            responses.gender = gender;
+            responses.mystery_experience = experience.value;
+
+            nextSection('scenario');
+        }
+
+        function validateManipulationCheck() {
+            const certaintyScale = document.querySelector('input[name="certainty_scale"]:checked');
+            const rewardStructure = document.querySelector('input[name="reward_structure"]:checked');
+
+            if (!certaintyScale || !rewardStructure) {
+                alert('Please answer all manipulation check questions before continuing.');
+                return;
+            }
+
+            responses.certainty_scale = certaintyScale.value;
+            responses.reward_structure = rewardStructure.value;
+
+            nextSection('purchase-intention');
+        }
+
+        async function validatePurchaseIntention() {
+            const urgeBuy = document.querySelector('input[name="urge_buy"]:checked');
+            const wantPurchase = document.querySelector('input[name="want_purchase"]:checked');
+            const impulseBuy = document.querySelector('input[name="impulse_buy"]:checked');
+            const probabilityBuy = document.querySelector('input[name="probability_buy"]:checked');
+
+            if (!urgeBuy || !wantPurchase || !impulseBuy || !probabilityBuy) {
+                alert('Please answer all questions before submitting.');
+                return;
+            }
+
+            responses.urge_buy = urgeBuy.value;
+            responses.want_purchase = wantPurchase.value;
+            responses.impulse_buy = impulseBuy.value;
+            responses.probability_buy = probabilityBuy.value;
+            responses.timestamp = new Date().toISOString();
+
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Submitting...<div class="loading"></div>';
+
+            try {
+                // Send data to Google Sheets
+                await submitToGoogleSheets(responses);
+                nextSection('thankyou');
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('There was an error submitting your responses. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Submit Responses';
+            }
+        }
+
+        async function submitToGoogleSheets(data) {
+            if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+                // For testing - just log the data
+                console.log('Study responses:', data);
+                return;
+            }
+
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
             });
-        });
 
-        // Purchase intention form validation
-        const form = document.getElementById('purchaseIntentionForm');
-        form.addEventListener('change', function() {
-            const allAnswered = ['q1', 'q2', 'q3', 'q4', 'q5'].every(q => 
-                document.querySelector(`input[name="${q}"]:checked`)
-            );
-            document.getElementById('submitBtn').disabled = !allAnswered;
-        });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            return response.json();
+        }
+
+        // Initialize progress bar
+        updateProgress();
     </script>
 </body>
 </html>
