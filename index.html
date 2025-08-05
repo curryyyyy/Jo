@@ -765,7 +765,7 @@
         let responses = {};
 
         // Your Google Apps Script URL - Data will save to Google Sheets
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztrB5NUqeIjNkfTVB6T7bU84_QjcYEjLhYu-MNZ2t7/dev';
+        const spreadsheet = SpreadsheetApp.openByUrl('https://script.google.com/macros/s/AKfycbztrB5NUqeIjNkfTVB6T7bU84_QjcYEjLhYu-MNZ2t7/dev');
 
         // Scenarios for different conditions
         const scenarios = {
@@ -1082,3 +1082,4 @@
     </script>
 </body>
 </html>
+
