@@ -148,6 +148,60 @@
             box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
         }
 
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.5em;
+            }
+            
+            /* Make images responsive on mobile */
+            .scenario-box img {
+                max-width: 100% !important;
+                width: auto !important;
+                height: auto !important;
+            }
+            
+            .scale-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .scale-options {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+
         .consent-text {
             background: #f8f9fa;
             padding: 25px;
@@ -295,11 +349,11 @@
                     <p>This study explores how certainty versus uncertainty in product information influences consumer purchase decisions in young adults. To participate in this study, you must:</p>
                     <ol>
                         <li>Be aged between 18-29 years old, and</li>
-                        <li>Not be diagnosed with any psychological disorder</li>
+                        <li>Be able to read and understand English instructions</li>
                     </ol>
                     
                     <h3>What will be done:</h3>
-                    <p>If you choose to take part in this research, you will first be asked to read and agree to an informed consent form. After that, you will be required to provide some demographic information. Then, you will be presented with a short scenario involving a purchasing situation followed by a Purchase Intention Scale (Bagozzi, 2016) to measure your intention to purchase. The entire process is expected to take no more than 10 minutes.</p>
+                    <p>If you choose to take part in this research, you will first be asked to read and agree to an informed consent form. After that, you will be required to provide some demographic information. Then, you will be presented with a short scenario involving a purchasing situation followed by a Purchase Intention Scale (Bagozzi, 2016) to measure your intention to purchase. The entire process is expected to take no more than 15 minutes.</p>
                     
                     <h3>Risks and discomfort:</h3>
                     <p>There are no anticipated risks or discomfort in participation in the current study. However, if you experience any discomfort while participating in this study, you are free to terminate your participation at any time, and you will not be penalised. If you find your participation in the study has caused you psychological harm, you may contact the Centre of Psychological and Counselling Services (CPCS) at https://www.cpcs-helpuni.com/ (03-78493200) or any reputable counselling centres near you. Please note that the CPCS only sees clients on an appointment basis.</p>
@@ -341,7 +395,9 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn" onclick="processConsent()">Continue</button>
+                <div class="button-group">
+                    <button class="btn" onclick="processConsent()">Continue</button>
+                </div>
             </div>
 
             <!-- Eligibility Check -->
@@ -362,19 +418,22 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Have you been diagnosed with any psychological disorder?</label>
+                    <label>Are you able to read and understand English instructions?</label>
                     <div class="radio-group">
                         <div class="radio-option">
-                            <input type="radio" id="psych_yes" name="psych_disorder" value="yes">
-                            <label for="psych_yes">Yes</label>
+                            <input type="radio" id="english_yes" name="english_proficiency" value="yes">
+                            <label for="english_yes">Yes</label>
                         </div>
                         <div class="radio-option">
-                            <input type="radio" id="psych_no" name="psych_disorder" value="no">
-                            <label for="psych_no">No</label>
+                            <input type="radio" id="english_no" name="english_proficiency" value="no">
+                            <label for="english_no">No</label>
                         </div>
                     </div>
                 </div>
-                <button class="btn" onclick="checkEligibility()">Continue</button>
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="goBack('consent')">Back</button>
+                    <button class="btn" onclick="checkEligibility()">Continue</button>
+                </div>
             </div>
 
             <!-- Demographics -->
@@ -396,7 +455,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Do you have previous experience with purchasing blind box/mystery items?</label>
+                    <label>Have you previously purchased a blind box/mystery products before? <em>(*Products where you don't know the specific item until after purchase)</em></label>
                     <div class="radio-group">
                         <div class="radio-option">
                             <input type="radio" id="exp_yes" name="mystery_experience" value="yes">
@@ -408,7 +467,36 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn" onclick="validateDemographics()">Continue</button>
+
+                <div class="form-group">
+                    <label>In the past 6 months, how many blind box/mystery products have you purchased? <em>(*Products where you don't know the specific item until after purchase)</em></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="freq_0" name="purchase_frequency" value="0">
+                            <label for="freq_0">0 (none in the past six months)</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="freq_1-2" name="purchase_frequency" value="1-2">
+                            <label for="freq_1-2">1-2</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="freq_3-5" name="purchase_frequency" value="3-5">
+                            <label for="freq_3-5">3-5</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="freq_6-10" name="purchase_frequency" value="6-10">
+                            <label for="freq_6-10">6-10</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="freq_more" name="purchase_frequency" value="more than 10">
+                            <label for="freq_more">More than 10</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="goBack('eligibility')">Back</button>
+                    <button class="btn" onclick="validateDemographics()">Continue</button>
+                </div>
             </div>
 
             <!-- Scenario Presentation -->
@@ -417,70 +505,10 @@
                 <div class="scenario-box" id="scenarioContent">
                     <!-- Scenario content will be inserted here based on condition -->
                 </div>
-                <button class="btn" onclick="nextSection('manipulation-check')">Continue</button>
-            </div>
-
-            <!-- Manipulation Check -->
-            <div class="section" id="manipulation-check">
-                <h2>Manipulation Check</h2>
-                
-                <div class="form-group">
-                    <label><strong>How certain were you about what reward you would receive?</strong></label>
-                    <p style="font-size: 14px; color: #666; margin-bottom: 15px;">
-                        1 = very uncertain, meaning you do not know what you will get<br>
-                        7 = very certain, meaning you know what you will get
-                    </p>
-                    <div class="scale-item">
-                        <span>Very Uncertain</span>
-                        <div class="scale-options">
-                            <div class="scale-option-container">
-                                <input type="radio" name="certainty_scale" value="1">
-                                <span class="scale-number">1</span>
-                            </div>
-                            <div class="scale-option-container">
-                                <input type="radio" name="certainty_scale" value="2">
-                                <span class="scale-number">2</span>
-                            </div>
-                            <div class="scale-option-container">
-                                <input type="radio" name="certainty_scale" value="3">
-                                <span class="scale-number">3</span>
-                            </div>
-                            <div class="scale-option-container">
-                                <input type="radio" name="certainty_scale" value="4">
-                                <span class="scale-number">4</span>
-                            </div>
-                            <div class="scale-option-container">
-                                <input type="radio" name="certainty_scale" value="5">
-                                <span class="scale-number">5</span>
-                            </div>
-                            <div class="scale-option-container">
-                                <input type="radio" name="certainty_scale" value="6">
-                                <span class="scale-number">6</span>
-                            </div>
-                            <div class="scale-option-container">
-                                <input type="radio" name="certainty_scale" value="7">
-                                <span class="scale-number">7</span>
-                            </div>
-                        </div>
-                        <span>Very Certain</span>
-                    </div>
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="goBack('demographics')">Back</button>
+                    <button class="btn" onclick="nextSection('purchase-intention')">Continue</button>
                 </div>
-
-                <div class="form-group">
-                    <label><strong>Which best describes the reward structure?</strong></label>
-                    <div class="radio-group">
-                        <div class="radio-option">
-                            <input type="radio" id="reward_knew" name="reward_structure" value="knew">
-                            <label for="reward_knew">I knew exactly what I would get</label>
-                        </div>
-                        <div class="radio-option">
-                            <input type="radio" id="reward_unsure" name="reward_structure" value="unsure">
-                            <label for="reward_unsure">I was unsure what I would get</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <button class="btn" onclick="validateManipulationCheck()">Continue</button>
             </div>
 
             <!-- Purchase Intention Scale -->
@@ -633,7 +661,76 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn" id="submitBtn" onclick="validatePurchaseIntention()">Submit Responses</button>
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="goBack('scenario')">Back</button>
+                    <button class="btn" id="submitBtn" onclick="validatePurchaseIntention()">Continue</button>
+                </div>
+            </div>
+
+            <!-- Manipulation Check -->
+            <div class="section" id="manipulation-check">
+                <h2>Manipulation Check</h2>
+                
+                <div class="form-group">
+                    <label><strong>How certain were you about what reward you would receive?</strong></label>
+                    <p style="font-size: 14px; color: #666; margin-bottom: 15px;">
+                        1 = very uncertain, meaning you do not know what you will get<br>
+                        7 = very certain, meaning you know what you will get
+                    </p>
+                    <div class="scale-item">
+                        <span>Very Uncertain</span>
+                        <div class="scale-options">
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="1">
+                                <span class="scale-number">1</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="2">
+                                <span class="scale-number">2</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="3">
+                                <span class="scale-number">3</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="4">
+                                <span class="scale-number">4</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="5">
+                                <span class="scale-number">5</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="6">
+                                <span class="scale-number">6</span>
+                            </div>
+                            <div class="scale-option-container">
+                                <input type="radio" name="certainty_scale" value="7">
+                                <span class="scale-number">7</span>
+                            </div>
+                        </div>
+                        <span>Very Certain</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label><strong>Which best describes the reward structure?</strong></label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="reward_knew" name="reward_structure" value="knew">
+                            <label for="reward_knew">I knew exactly what I would get</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="reward_unsure" name="reward_structure" value="unsure">
+                            <label for="reward_unsure">I was unsure what I would get</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="goBack('purchase-intention')">Back</button>
+                    <button class="btn" onclick="validateManipulationCheck()">Submit Responses</button>
+                </div>
             </div>
 
             <!-- Thank You Page -->
@@ -668,44 +765,38 @@
         let responses = {};
 
         // Your Google Apps Script URL - Data will save to Google Sheets
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwlBU2O_yrt90dGeXAiVL4AJvpUgSzYf9RIqf85WhXEuO8-3We_xOVc4Qz1RyXvnFwO/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbztrB5NUqeIjNkfTVB6T7bU84_QjcYEjLhYu-MNZ2t7/dev';
 
         // Scenarios for different conditions
         const scenarios = {
             uncertainty: {
                 title: "Experimental Scenario",
-                content: "Imagine the following situation:<br><br>You are browsing an online store and come across a limited-edition mystery product. The box costs RM50, and the item inside is random. Some of the rare items are said to be worth over RM150, while others may be worth less.",
+                content: "Imagine the following situation:<br><br>You come across a Labubu 'Have A Seat' collectible priced at RM70. This is sold in a mystery box format, you can see the possible characters (as shown), but you won't know which specific one you'll receive until after purchase. Some versions are valued higher than others.",
                 image: `
                     <div style="text-align: center; margin: 20px 0;">
-                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                                    width: 200px; height: 200px; border-radius: 15px; 
-                                    display: inline-flex; align-items: center; justify-content: center;
-                                    box-shadow: 0 10px 30px rgba(0,0,0,0.2); margin-bottom: 15px;">
-                            <div style="color: white; text-align: center;">
-                                <div style="font-size: 60px; margin-bottom: 10px;">?</div>
-                                <div style="font-weight: bold; font-size: 16px;">LIMITED EDITION</div>
-                                <div style="font-size: 14px; opacity: 0.9;">Mystery Collectible</div>
-                            </div>
-                        </div>
+                        <img src="https://imgur.com/yCSt9Bi.jpg" 
+                             style="max-width: 100%; width: 400px; height: auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);"
+                             alt="Labubu Have A Seat Mystery Box showing possible characters">
                         <div style="margin-top: 15px;">
-                            <div style="font-size: 18px; color: #667eea; font-weight: bold;">🎁 Mystery Collectible Box</div>
-                            <div style="font-size: 14px; color: #666; margin: 5px 0;">Get a surprise limited-edition collectible! Each box contains one random item from our exclusive collection.</div>
-                            <div style="font-size: 24px; color: #e74c3c; font-weight: bold;">RM 50</div>
+                            <div style="font-size: 18px; color: #667eea; font-weight: bold;">🎁 Labubu 'Have A Seat' Mystery Box</div>
+                            <div style="font-size: 14px; color: #666; margin: 5px 0;">Collectible series by Pop Mart - you'll receive one random character from the series</div>
+                            <div style="font-size: 24px; color: #e74c3c; font-weight: bold;">RM 70</div>
                         </div>
                     </div>
                 `
             },
             certainty: {
                 title: "Experimental Scenario", 
-                content: "Imagine the following situation:<br><br>Imagine you come across a limited-edition collectible product for RM50. The product clearly shows the exact item you will receive a Cry Baby.",
+                content: "Imagine the following situation:<br><br>You come across a Labubu 'Have A Seat' collectible priced at RM70. The product clearly shows the exact item you will receive - the BABA character from this series (as shown in the image). Labubu are popular collectible figures by Pop Mart featuring cute, rabbit-like characters that are very popular among young adults. You know exactly which specific character you will get.",
                 image: `
                     <div style="text-align: center; margin: 20px 0;">
-                        <img src="https://prod-eurasian-res.popmart.com/default/20240422_100725_282634__1200x1200.jpg?x-oss-process=image/format,webp" 
-                             style="width: 200px; height: 200px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); object-fit: cover;">
+                        <img src="https://i.imgur.com/qfFB3Qw.jpeg" 
+                             style="max-width: 100%; width: 250px; height: auto; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);"
+                             alt="Labubu BABA character - brown rabbit-like figure">
                         <div style="margin-top: 15px;">
-                            <div style="font-size: 18px; color: #667eea; font-weight: bold;">🎀 Cry Baby × Powerpuff Girls</div>
-                            <div style="font-size: 14px; color: #666; margin: 5px 0;">Limited-edition collectible featuring Cry Baby × Powerpuff Girls series.</div>
-                            <div style="font-size: 24px; color: #e74c3c; font-weight: bold;">RM 50</div>
+                            <div style="font-size: 18px; color: #667eea; font-weight: bold;">🐰 Labubu 'Have A Seat' - BABA Character</div>
+                            <div style="font-size: 14px; color: #666; margin: 5px 0;">Specific character from the collectible series by Pop Mart</div>
+                            <div style="font-size: 24px; color: #e74c3c; font-weight: bold;">RM 70</div>
                         </div>
                     </div>
                 `
@@ -715,6 +806,18 @@
         function updateProgress() {
             const progress = (currentStep / totalSteps) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function goBack(sectionId) {
+            // Hide current section
+            document.querySelector('.section.active').classList.remove('active');
+            
+            // Show previous section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update step counter (go backwards)
+            currentStep--;
+            updateProgress();
         }
 
         function nextSection(sectionId) {
@@ -749,32 +852,56 @@
                 return;
             }
 
+            responses.consent = consent.value;
+
             if (consent.value === 'no') {
+                // Save data for participants who declined consent
+                responses.study_status = 'declined_consent';
+                responses.timestamp = new Date().toISOString();
+                
+                // Submit data for participants who declined
+                submitToGoogleSheets(responses).then(() => {
+                    console.log('Declined consent participant data saved:', responses);
+                }).catch(error => {
+                    console.error('Error saving declined consent data:', error);
+                });
+                
                 nextSection('thankyou');
                 return;
             }
 
-            responses.consent = consent.value;
             nextSection('eligibility');
         }
 
         function checkEligibility() {
             const ageEligible = document.querySelector('input[name="age_eligible"]:checked');
-            const psychDisorder = document.querySelector('input[name="psych_disorder"]:checked');
+            const englishProficiency = document.querySelector('input[name="english_proficiency"]:checked');
 
-            if (!ageEligible || !psychDisorder) {
+            if (!ageEligible || !englishProficiency) {
                 alert('Please answer all eligibility questions.');
                 return;
             }
 
             responses.age_eligible = ageEligible.value;
-            responses.psych_disorder = psychDisorder.value;
+            responses.english_proficiency = englishProficiency.value;
 
-            if (ageEligible.value === 'no' || psychDisorder.value === 'yes') {
+            if (ageEligible.value === 'no' || englishProficiency.value === 'no') {
+                // Save ineligible participant data
+                responses.study_status = 'ineligible';
+                responses.timestamp = new Date().toISOString();
+                
+                // Submit data for ineligible participants
+                submitToGoogleSheets(responses).then(() => {
+                    console.log('Ineligible participant data saved:', responses);
+                }).catch(error => {
+                    console.error('Error saving ineligible participant data:', error);
+                });
+                
                 nextSection('ineligible');
                 return;
             }
 
+            responses.study_status = 'eligible';
             nextSection('demographics');
         }
 
@@ -782,8 +909,9 @@
             const age = document.getElementById('age').value;
             const gender = document.getElementById('gender').value;
             const experience = document.querySelector('input[name="mystery_experience"]:checked');
+            const frequency = document.querySelector('input[name="purchase_frequency"]:checked');
 
-            if (!age || !gender || !experience) {
+            if (!age || !gender || !experience || !frequency) {
                 alert('Please fill in all demographic information.');
                 return;
             }
@@ -796,33 +924,19 @@
             responses.age = age;
             responses.gender = gender;
             responses.mystery_experience = experience.value;
+            responses.purchase_frequency = frequency.value;
 
             nextSection('scenario');
         }
 
-        function validateManipulationCheck() {
-            const certaintyScale = document.querySelector('input[name="certainty_scale"]:checked');
-            const rewardStructure = document.querySelector('input[name="reward_structure"]:checked');
-
-            if (!certaintyScale || !rewardStructure) {
-                alert('Please answer all manipulation check questions before continuing.');
-                return;
-            }
-
-            responses.certainty_scale = certaintyScale.value;
-            responses.reward_structure = rewardStructure.value;
-
-            nextSection('purchase-intention');
-        }
-
-        async function validatePurchaseIntention() {
+        function validatePurchaseIntention() {
             const urgeBuy = document.querySelector('input[name="urge_buy"]:checked');
             const wantPurchase = document.querySelector('input[name="want_purchase"]:checked');
             const impulseBuy = document.querySelector('input[name="impulse_buy"]:checked');
             const probabilityBuy = document.querySelector('input[name="probability_buy"]:checked');
 
             if (!urgeBuy || !wantPurchase || !impulseBuy || !probabilityBuy) {
-                alert('Please answer all questions before submitting.');
+                alert('Please answer all questions before continuing.');
                 return;
             }
 
@@ -830,10 +944,26 @@
             responses.want_purchase = wantPurchase.value;
             responses.impulse_buy = impulseBuy.value;
             responses.probability_buy = probabilityBuy.value;
+
+            nextSection('manipulation-check');
+        }
+
+        async function validateManipulationCheck() {
+            const certaintyScale = document.querySelector('input[name="certainty_scale"]:checked');
+            const rewardStructure = document.querySelector('input[name="reward_structure"]:checked');
+
+            if (!certaintyScale || !rewardStructure) {
+                alert('Please answer all manipulation check questions before submitting.');
+                return;
+            }
+
+            responses.certainty_scale = certaintyScale.value;
+            responses.reward_structure = rewardStructure.value;
+            responses.study_status = 'completed';
             responses.timestamp = new Date().toISOString();
 
             // Show loading state
-            const submitBtn = document.getElementById('submitBtn');
+            const submitBtn = document.querySelector('#manipulation-check .btn');
             submitBtn.disabled = true;
             submitBtn.innerHTML = 'Saving to Google Sheets...<div class="loading"></div>';
 
@@ -857,26 +987,31 @@
                 return;
             }
 
-            // Prepare data for Google Sheets
-            const formData = new FormData();
-            formData.append('timestamp', new Date().toISOString());
-            formData.append('condition', data.condition || '');
-            formData.append('consent', data.consent || '');
-            formData.append('age_eligible', data.age_eligible || '');
-            formData.append('psych_disorder', data.psych_disorder || '');
-            formData.append('age', data.age || '');
-            formData.append('gender', data.gender || '');
-            formData.append('mystery_experience', data.mystery_experience || '');
-            formData.append('certainty_scale', data.certainty_scale || '');
-            formData.append('reward_structure', data.reward_structure || '');
-            formData.append('urge_buy', data.urge_buy || '');
-            formData.append('want_purchase', data.want_purchase || '');
-            formData.append('impulse_buy', data.impulse_buy || '');
-            formData.append('probability_buy', data.probability_buy || '');
+            // Convert data to URL-encoded format instead of FormData
+            const params = new URLSearchParams();
+            params.append('timestamp', new Date().toISOString());
+            params.append('study_status', data.study_status || '');
+            params.append('condition', data.condition || '');
+            params.append('consent', data.consent || '');
+            params.append('age_eligible', data.age_eligible || '');
+            params.append('english_proficiency', data.english_proficiency || '');
+            params.append('age', data.age || '');
+            params.append('gender', data.gender || '');
+            params.append('mystery_experience', data.mystery_experience || '');
+            params.append('purchase_frequency', data.purchase_frequency || '');
+            params.append('certainty_scale', data.certainty_scale || '');
+            params.append('reward_structure', data.reward_structure || '');
+            params.append('urge_buy', data.urge_buy || '');
+            params.append('want_purchase', data.want_purchase || '');
+            params.append('impulse_buy', data.impulse_buy || '');
+            params.append('probability_buy', data.probability_buy || '');
 
             const response = await fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: params.toString()
             });
 
             if (!response.ok) {
@@ -891,58 +1026,38 @@
 
         /*
         ==========================================
-        GOOGLE SHEETS SETUP INSTRUCTIONS:
+        UPDATED GOOGLE APPS SCRIPT CODE:
         ==========================================
         
-        1. Go to script.google.com
-        2. Sign in with jhc273232@gmail.com
-        3. Click "New Project"
-        4. Delete default code and paste this:
-
         function doPost(e) {
           try {
-            const data = {};
-            
-            // Get form data
-            if (e.parameter) {
-              Object.keys(e.parameter).forEach(key => {
-                data[key] = e.parameter[key];
-              });
-            }
-            
-            // Create or open spreadsheet
-            let spreadsheet;
-            try {
-              // Try to open existing spreadsheet (will create new one first time)
-              spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit');
-            } catch {
-              // Create new spreadsheet
-              spreadsheet = SpreadsheetApp.create('Research Study Data - Consumer Purchase Decisions');
-              
-              // Add headers
-              const sheet = spreadsheet.getActiveSheet();
-              sheet.getRange(1, 1, 1, 15).setValues([[
-                'Timestamp', 'Condition', 'Consent', 'Age_Eligible', 'Psych_Disorder',
-                'Age', 'Gender', 'Mystery_Experience', 'Certainty_Scale', 'Reward_Structure',
-                'Urge_Buy', 'Want_Purchase', 'Impulse_Buy', 'Probability_Buy', 'Submission_Time'
-              ]]);
-              
-              // Share with your email
-              spreadsheet.addEditor('jhc273232@gmail.com');
-            }
-            
+            // Open your specific spreadsheet
+            const spreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1Q_OTo5whut1Sj9chIJjvTq_41PMN0xxQGFq_7Q_3wcA/edit');
             const sheet = spreadsheet.getActiveSheet();
+            
+            // Check if headers exist, if not add them
+            if (sheet.getLastRow() === 0) {
+              sheet.getRange(1, 1, 1, 17).setValues([[
+                'Timestamp', 'Study_Status', 'Condition', 'Consent', 'Age_Eligible', 'English_Proficiency',
+                'Age', 'Gender', 'Mystery_Experience', 'Purchase_Frequency', 'Certainty_Scale',
+                'Reward_Structure', 'Urge_Buy', 'Want_Purchase', 'Impulse_Buy', 'Probability_Buy', 'Submission_Time'
+              ]]);
+            }
+            
+            const data = e.parameter;
             
             // Add participant data as new row
             sheet.appendRow([
               data.timestamp || new Date(),
+              data.study_status || '',
               data.condition || '',
               data.consent || '',
               data.age_eligible || '',
-              data.psych_disorder || '',
+              data.english_proficiency || '',
               data.age || '',
               data.gender || '',
               data.mystery_experience || '',
+              data.purchase_frequency || '',
               data.certainty_scale || '',
               data.reward_structure || '',
               data.urge_buy || '',
@@ -959,15 +1074,9 @@
           }
         }
 
-        5. Click "Deploy" > "New deployment"
-        6. Set Type: "Web app"
-        7. Set Execute as: "Me"
-        8. Set Who has access: "Anyone"
-        9. Click "Deploy"
-        10. COPY THE WEB APP URL
-        11. Replace 'YOUR_SCRIPT_ID_HERE' in line with your URL
-        
-        Your data will automatically save to Google Sheets!
+        1. Copy this updated code to your Google Apps Script
+        2. Save and deploy as new version
+        3. Now tracks ALL participants including ineligible ones
         ==========================================
         */
     </script>
